@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+audio_app_env/
+venv/
+env/
+
+# Distribution / Build
+dist/
+build/
+*.spec
+
+# Application Data & Models (Download on demand)
+vits-piper-*/
+*.tar.bz2
+*.onnx
+
+# Output Files
+*.wav
+test_output.wav
+
+# IDE
+.vscode/
+.idea/

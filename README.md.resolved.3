@@ -1,0 +1,77 @@
+# Offline Neural TTS Application
+
+A standalone Linux desktop application to convert text to speech using high-quality neural models (Coqui TTS) completely offline.
+
+## Features
+- **Offline Generation**: No internet required after initial model download.
+- **Neural Quality**: Uses `sherpa-onnx` (VITS) for high-performance offline speech.
+- **Lightweight**: ~20MB model download (vs ~700MB for Coqui).
+- **Compatible**: Works on Python 3.12+ and low-end hardware.
+- **Save Audio**: Export speech to `.wav` files.
+
+## Prerequisites
+- **OS**: Linux (Ubuntu 20.04+ recommended)
+- **Python**: 3.8 - 3.12+
+- **System Libraries**: 
+  ```bash
+  sudo apt-get install espeak-ng python3-tk
+  ```
+
+## Installation
+
+1.  **Create a Virtual Environment** (Recommended to avoid conflicts):
+    ```bash
+    python3 -m venv tts_env
+    source tts_env/bin/activate
+    ```
+
+2.  **Install Dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *Note: This will download PyTorch and Coqui TTS, which may take some time (~700MB+).*
+
+## Running the Application
+
+1.  **Launch**:
+    ```bash
+    python3 tts_app.py
+    ```
+
+2.  **First Run**:
+    - The application will automatically download the default model (`tts_models/en/vctk/vits`) during the "Initializing Worker..." phase.
+    - **Wait** for the status bar to show "Ready. Model Loaded.". This depends on your internet speed and only happens once.
+
+3.  **Usage**:
+    - **Select Voice**: Use the dropdown to pick a speaker (e.g., `p226` for male, `p225` for female).
+    - **Type Text**: Enter text in the box.
+    - **Play**: Click "Generate & Play" to hear it immediately.
+    - **Save**: Click "Save to File" to archive the audio.
+
+## Testing Information
+To test the application properly without launching the full GUI (e.g. for creating an initial test run or debugging):
+```bash
+./run.sh --test
+```
+This will run a self-check, generating a "test_output.wav" file to confirm the TTS engine is working.
+
+## Deployment & Usage
+To turn this into a publishable application:
+
+### 1. Build Standalone Executable
+Run the included build script to package everything into a single file:
+```bash
+./build.sh
+```
+This uses PyInstaller to create a binary in `dist/OfflineTTS`. You can share this file with other Linux users (tested on Ubuntu).
+
+### 2. Manual Run
+You can always run the source code directly using the installer script, which handles dependencies for you:
+```bash
+./run.sh
+```
+
+## Troubleshooting
+- **No Audio**: Ensure `sounddevice` and `portaudio` are installed.
+  - Linux: `sudo apt-get install python3-pyaudio portaudio19-dev` might be needed if pip install fails.
+- **Slow Generation**: Neural TTS is heavy. A dedicated GPU (NVIDIA) speeds it up significantly, but modern CPUs can run VITS in near real-time.

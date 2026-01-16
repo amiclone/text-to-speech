@@ -1,0 +1,67 @@
+# Implementation Plan - Offline Neural TTS Application
+
+## Goal Description
+Design and implement a standalone Linux desktop application for offline text-to-speech conversion using neural network models. The app will allow users to generate speech from text, listen to it, and save it as audio files, supporting multiple voices (Male/Female).
+
+## User Review Required
+> [!IMPORTANT]
+> **Environment & Dependencies**: This application requires a significant Python environment setup (`Coqui TTS` is a large library with PyTorch dependencies).
+> - **Storage waring**: Neural TTS models are downloaded on first run (can be several hundred MBs).
+> - **Hardware**: A GPU is recommended for real-time performance, though modern CPUs can run optimized VITS models reasonably fast.
+> - **Workspace**: Since the current active workspace is a web application (`promt manager`), the TTS application code will be generated as artifacts in the `.gemini` directory for you to deploy to a location of your choice (e.g., `~/Documents/OfflineTTS`).
+
+## Architecture & Tech Stack
+
+### Technology Stack
+- **Language**: Python 3.8+
+- **GUI Framework**: `Tkinter` (Standard, minimal, reliable on Linux).
+- **TTS Engine**: `Coqui TTS` (`pip install TTS`).
+  - Model: `tts_models/en/vctk/vits` (Multi-speaker, high quality, generally faster inference).
+- **Audio Playback**: `sounddevice` + `numpy`.
+- **Audio Saving**: `scipy.io.wavfile`.
+
+### Architecture Design
+1.  **GUI Layer (`app.py`)**:
+    -   Input text area (scrollable).
+    -   Voice selection dropdown (mapping speaker IDs from the multi-speaker model).
+    -   Controls: "Generate & Play", "Save to File", "Stop".
+    -   Status bar (Ready, Generating..., Playing...).
+2.  **Logic Layer (`tts_engine.py`)**:
+    -   `TTSThread`: A background thread to handle model loading (heavy) and inference (heavy) to keep the GUI responsive.
+    -   `AudioPlayer`: Handles async playback.
+
+## Proposed Changes
+I will generate the following files as artifacts:
+
+### [NEW] [tts_app.py](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/tts_app.py)
+A single-file prototype containing the GUI, TTS wrapper, and Main logic for portability.
+- **Classes**:
+    -   `TTSWorker`: QThread-like worker (using `threading`) for async tasks.
+    -   `TTSApp`: Main Tkinter class.
+-   **Features**:
+    -   Auto-download model on first launch.
+    -   Cache model in memory.
+    -   Chunk text logic (split by sentences/newlines) for long inputs.
+
+### [NEW] [requirements.txt](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/requirements.txt)
+Dependencies list.
+
+### [NEW] [README.md](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/README.md)
+Instructions for installation (`virtualenv` creation) and running.
+
+## Verification Plan
+Since I cannot play audio or easily install heavy deps in this constrained environment, I will verify by:
+1.  **Static Analysis**: Ensure `tts_app.py` is syntactically correct and imports exist in standard names.
+2.  **Dry Run** (Optional): If possible, run `python3 tts_app.py --help` or similar to check for syntax errors, though `import TTS` might fail if not installed.
+3.  **User Instructions**: The `README.md` will provide exact commands for the user to run to verify audio on their machine.
+
+### Automated Tests
+N/A (Requires GUI and Audio Hardware).
+
+### Manual Verification
+1.  Install dependencies: `pip install -r requirements.txt`
+2.  Run app: `python3 tts_app.py`
+3.  Enter text "Hello world".
+4.  Select a Male voice (e.g., p226).
+5.  Click Play -> Check audio output.
+6.  Click Save -> Check `.wav` file creation.

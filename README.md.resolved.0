@@ -1,0 +1,53 @@
+# Offline Neural TTS Application
+
+A standalone Linux desktop application to convert text to speech using high-quality neural models (Coqui TTS) completely offline.
+
+## Features
+- **Offline Generation**: No internet required after initial model download.
+- **Neural Quality**: Uses the VITS model (VCTK dataset) for natural-sounding speech.
+- **Multi-Speaker**: Choose from over 100 different voices (Male/Female/Various accents).
+- **Save Audio**: Export speech to `.wav` files.
+
+## Prerequisites
+- **OS**: Linux (Ubuntu 20.04+ recommended)
+- **Python**: 3.9+ (Recommended)
+- **System Libraries**: `espeak-ng` (often required by TTS engines)
+  ```bash
+  sudo apt-get install espeak-ng
+  ```
+
+## Installation
+
+1.  **Create a Virtual Environment** (Recommended to avoid conflicts):
+    ```bash
+    python3 -m venv tts_env
+    source tts_env/bin/activate
+    ```
+
+2.  **Install Dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *Note: This will download PyTorch and Coqui TTS, which may take some time (~700MB+).*
+
+## Running the Application
+
+1.  **Launch**:
+    ```bash
+    python3 tts_app.py
+    ```
+
+2.  **First Run**:
+    - The application will automatically download the default model (`tts_models/en/vctk/vits`) during the "Initializing Worker..." phase.
+    - **Wait** for the status bar to show "Ready. Model Loaded.". This depends on your internet speed and only happens once.
+
+3.  **Usage**:
+    - **Select Voice**: Use the dropdown to pick a speaker (e.g., `p226` for male, `p225` for female).
+    - **Type Text**: Enter text in the box.
+    - **Play**: Click "Generate & Play" to hear it immediately.
+    - **Save**: Click "Save to File" to archive the audio.
+
+## Troubleshooting
+- **No Audio**: Ensure `sounddevice` and `portaudio` are installed.
+  - Linux: `sudo apt-get install python3-pyaudio portaudio19-dev` might be needed if pip install fails.
+- **Slow Generation**: Neural TTS is heavy. A dedicated GPU (NVIDIA) speeds it up significantly, but modern CPUs can run VITS in near real-time.

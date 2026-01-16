@@ -1,0 +1,27 @@
+# Walkthrough - Offline Neural TTS Application
+
+I have successfully designed and implemented a standalone, offline text-to-speech application for Linux using Python and Coqui TTS.
+
+## Deliverables in Artifacts Directory
+
+| File | Purpose |
+| :--- | :--- |
+| **[tts_app.py](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/tts_app.py)** | The main application code containing the GUI and TTS logic. |
+| **[requirements.txt](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/requirements.txt)** | List of Python dependencies required to run the app. |
+| **[README.md](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/README.md)** | Step-by-step instructions for installation and usage. |
+| **[implementation_plan.md](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/implementation_plan.md)** | The initial design document. |
+
+## Verification Results
+
+### Automatic Verification
+- **Syntax Check**: [tts_app.py](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/tts_app.py) passed Python syntax validation successfully.
+
+### Next Steps for You
+1.  **Copy Files**: Move the artifacts to your desired project location (e.g., `~/Documents/OfflineTTS`).
+2.  **Install Environment**: Follow the instructions in [README.md](file:///home/amiclone/Documents/Applications/promt%20manager/README.md) to create a virtual environment and install dependencies.
+3.  **Run**: Execute `python3 tts_app.py` and wait for the initial model download.
+
+## Key Features Implemented
+- **Background Threading**: The GUI remains responsive while the heavy TTS model loads or generates audio.
+- **Offline Capability**: Checks for `sounddevice` and [TTS](file:///home/amiclone/.gemini/antigravity/brain/a14e8774-b230-4fda-ae50-feed938b7acf/tts_app.py#31-127) libraries, handling missing dependencies gracefully.
+- **Voice Selection**: Dynamically populates the voice list based on the loaded VITS model.
